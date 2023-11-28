@@ -57,7 +57,6 @@ reference
 - Internet Archive: [archive.org/details/news-homepages](https://archive.org/details/news-homepages)
 - Mastodon: [@newshomepages](https://mastodon.palewi.re/@newshomepages)
 - Telegram: [newshomepages](https://t.me/newshomepages)
-- Discord: [#news-homepages](https://discord.gg/xkTMPMHM)
 - Code: [github.com/palewire/news-homepages](https://github.com/palewire/news-homepages)
 - Task runner: [github.com/palewire/news-homepages/actions](https://github.com/palewire/news-homepages/actions)
 - Packaging: [pypi.org/project/newshomepages](https://pypi.org/project/newshomepages/)
