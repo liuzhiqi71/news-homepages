@@ -4,7 +4,7 @@ An open-source archive that gathers, saves, shares and analyzes news homepages
 
 - Task runner: [github.com/palewire/news-homepages-runner](https://github.com/palewire/news-homepages-runner)
 - Internet Archive: [archive.org/details/news-homepages](https://archive.org/details/news-homepages)
-- Discord: [#news-homepages](https://discord.gg/xkTMPMHM)
+- Mastodon [mastodon.palewi.re/@newshomepages](https://mastodon.palewi.re/@newshomepages)
 - Telegram: [t.me/newshomepages](https://t.me/newshomepages)
 - Documentation: [palewi.re/docs/news-homepages/](https://palewi.re/docs/news-homepages/index.html)
 - Packaging: [pypi.org/project/newshomepages](https://pypi.org/project/newshomepages/)
