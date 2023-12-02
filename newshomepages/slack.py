@@ -7,6 +7,7 @@ from pathlib import Path
 import click
 import internetarchive
 import requests
+from retry import retry
 from rich import print
 
 from . import utils
@@ -14,6 +15,30 @@ from . import utils
 IA_ACCESS_KEY = os.getenv("IA_ACCESS_KEY")
 IA_SECRET_KEY = os.getenv("IA_SECRET_KEY")
 IA_COLLECTION = os.getenv("IA_COLLECTION")
+
+
+@retry(tries=5, delay=90, jitter=(-30, 30))
+def _upload(
+    identifier: str,
+    metadata: dict,
+    files: dict,
+    verbose: bool = False,
+    timeout: int = 60,
+):
+    """Upload the provided data to archive.org."""
+    internetarchive.upload(
+        identifier,
+        # Authentication
+        access_key=IA_ACCESS_KEY,
+        secret_key=IA_SECRET_KEY,
+        # Metadata about the item
+        metadata=metadata,
+        # The items we'll upload
+        files=files,
+        # Other options
+        verbose=verbose,
+        request_kwargs=dict(timeout=int(timeout)),
+    )
 
 
 @click.command()
@@ -66,18 +91,13 @@ def cli(handle: str, input_dir: str, verbose: bool = False, timeout: str = "60")
             f"Uploading {image_path} to {site_identifier} on archive.org as {jpg_name}"
         )
 
-    internetarchive.upload(
+    # Do the upload with a retry mechanism
+    _upload(
         site_identifier,
-        # Authentication
-        access_key=IA_ACCESS_KEY,
-        secret_key=IA_SECRET_KEY,
-        # Metadata about the item
-        metadata=site_metadata,
-        # The items we'll upload
-        files={jpg_name: image_path},
-        # Other options
+        site_metadata,
+        {jpg_name: image_path},
         verbose=verbose,
-        request_kwargs=dict(timeout=int(timeout)),
+        timeout=int(timeout),
     )
 
     # Set the URL we expect
