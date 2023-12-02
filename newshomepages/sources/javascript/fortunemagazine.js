@@ -1,1 +1,3 @@
-document.querySelector('#Leaderboard0').remove()
+document.querySelectorAll('#Leaderboard0').forEach(
+    el => el.remove()
+)

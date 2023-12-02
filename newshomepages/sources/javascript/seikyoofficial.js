@@ -1,1 +1,3 @@
-document.querySelector('#cookiePopUp').remove()
+document.querySelectorAll('#cookiePopUp').forEach(
+    el => el.remove()
+)

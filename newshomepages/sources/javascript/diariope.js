@@ -1,1 +1,3 @@
-document.querySelector('.wpcc-container').remove()
+document.querySelectorAll('.wpcc-container').forEach(
+    el => el.remove()
+)

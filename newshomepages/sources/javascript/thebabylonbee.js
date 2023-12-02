@@ -1,1 +1,3 @@
-document.querySelector('.overscroll-contain').remove()
+document.querySelectorAll('.overscroll-contain').forEach(
+    el => el.remove()
+)

@@ -1,1 +1,3 @@
-document.querySelector('#js-cc-modal').remove()
+document.querySelectorAll('#js-cc-modal').forEach(
+    el => el.remove()
+)
