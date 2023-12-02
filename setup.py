@@ -85,7 +85,6 @@ setup(
         "internetarchive",
         "python-slugify",
         "python-telegram-bot",
-        "discord.py",
         "playwright",
         "bs4",
         "html5lib",
