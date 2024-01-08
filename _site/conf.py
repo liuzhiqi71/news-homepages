@@ -36,7 +36,7 @@ html_sidebars = {
     ]
 }
 html_theme_options = {
-    "canonical_url": f"https://palewi.re/docs/{project}/",
+    "canonical_url": f"https://palewi.re/docs/news-homepages/",
     "show_powered_by": False,
     "show_relbar_bottom": True,
 }
