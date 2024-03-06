@@ -875,6 +875,7 @@ def _get_common_blocking_javascript() -> str:
         ".mol-ads-cmp",  # Footer toaster thing on some sites
         ".gdpr-glm-standard",  # GDPR blockers on some sites
         "#didomi-host",  # Common cookies popup
+        "#didomi-popup",  # another common popup
         ".fc-ab-root",  # Ad blocker popup
         ".fancybox-overlay",  # Popup overlay
         ".fancybox-overlay-fixed",
