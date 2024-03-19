@@ -70,7 +70,7 @@ def consolidate(
     file_list = []
     for file_name in track(json_list):
         print(f"- {file_name}")
-        
+
         # Read the data out of the zip file
         with zf.open(file_name) as fp:
             item_data = json.loads(fp.read())
