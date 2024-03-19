@@ -1,3 +1,6 @@
+"""Consolidate Internet Archive metadata into CSV files."""
+from __future__ import annotations
+
 import json
 import zipfile
 from datetime import datetime
@@ -171,7 +174,7 @@ def consolidate(
 
 
 @retry(tries=3, delay=180, backoff=2)
-def _get_zip_archive(output_dir: Path):
+def _get_zip_archive(output_dir: Path) -> zipfile.ZipFile:
     print("⬇️ Downloading latest data")
     zip_url = "https://archive.org/compress/latest-homepages/formats=JSON,JPEG,ITEM%20TILE,ARCHIVE%20BITTORRENT,METADATA"
     zip_path = output_dir / "latest.zip"
