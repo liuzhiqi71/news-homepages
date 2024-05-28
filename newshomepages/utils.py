@@ -315,7 +315,7 @@ def get_site_df() -> pd.DataFrame:
     df = df.sort_values("handle")
 
     # Fill in the empty wait with strings
-    df["wait"].fillna("", inplace=True)
+    df["wait"] = df["wait"].fillna("")
 
     # Split the bundle lists using the '|' in the CSV
     def _split_bundle(row):
@@ -915,6 +915,7 @@ def _get_common_blocking_javascript() -> str:
         ".modal-backdrop",
         ".connext-modal-backdrop",
         ".modal-backdrop",
+        ".hs-cookie-notification-position-bottom",  # Hubspot cookie notification
     ]
     target_str = ",".join(target_list)
     return f"""
