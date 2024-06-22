@@ -117,7 +117,7 @@ def gif(input_dir: str, output_dir: str, maximium_slides: int = 15):
         width, height = size
         images = [
             ImageOps.fit(image, size, Image.Resampling.LANCZOS, centering=(0.5, 0))
-            for image in Image.open(image_chunk)  # ignore: type
+            for image in Image.open(image_chunk)  # type: ignore
         ]
 
         # Create canvas for the final image with total size
