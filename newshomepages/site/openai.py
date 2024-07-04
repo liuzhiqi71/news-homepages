@@ -43,6 +43,18 @@ def openai(no_cache=False):
     ai_list.rules = ai_list.rules.str.strip().str.upper()
     disallow_list = ai_list[ai_list.rules.str.startswith("DISALLOW: /")].copy()
 
+    # Print out any duplicate combinations of handle and user_agent
+    duplicates = disallow_list[
+        disallow_list.duplicated(subset=["handle", "user_agent"], keep=False)
+    ]
+    if len(duplicates) > 0:
+        print(
+            f":warning: Found {len(duplicates)} duplicate entries in the disallow list"
+        )
+        print(duplicates.to_csv())
+        # Delete the duplicates
+        disallow_list = disallow_list.drop_duplicates(subset=["handle", "user_agent"])
+
     # Pivot the list so that the user_agent column becomes columns
     # and the rows are unique to each site
     disallow_pivot = disallow_list.pivot(
