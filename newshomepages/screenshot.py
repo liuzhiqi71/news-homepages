@@ -106,6 +106,7 @@ def _screenshot(
         type="jpeg",
         path=str(jpg_path),
         full_page=full_page,
+        timeout=90 * 1000,  # 90 second timeout
     )
 
     # Close the page
