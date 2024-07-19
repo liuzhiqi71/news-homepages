@@ -285,9 +285,11 @@ def drudge_hyperlinks(output_dir: str = "./"):
         ],
         dtype=str,
         parse_dates=["date"],
+        low_memory=True,
     )
 
     # Trim the strings
+    print("Trimming strings")
     df["text"] = (
         df.text.str.strip()
         .str.replace(r"\s{2,}", " ", regex=True)
@@ -296,6 +298,7 @@ def drudge_hyperlinks(output_dir: str = "./"):
     df["url"] = df.url.str.strip()
 
     # Guess links with `storysniffer`
+    print("Sniffing out stories")
     sniffer = storysniffer.StorySniffer()
     links_df = (
         df.sort_values("date")
@@ -310,6 +313,7 @@ def drudge_hyperlinks(output_dir: str = "./"):
     )
 
     # Make some corrections
+    print("Applying our corrections")
     blacklist = [
         "/privacy/",
     ]
@@ -345,6 +349,7 @@ def drudge_hyperlinks(output_dir: str = "./"):
     )
 
     # Write the result
+    print("Writing out the results")
     links_df.sort_values(
         ["domain", "earliest_date", "text"], ascending=[True, False, True]
     ).to_csv(output_path / "drudge-hyperlinks-analysis.csv", index=False)
