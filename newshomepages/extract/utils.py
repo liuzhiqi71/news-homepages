@@ -20,7 +20,7 @@ def _get_json_url(url):
         return pd.read_json(output_path)
     else:
         # Get the URL
-        data = utils.get_json_url(url)
+        data = utils.get_json_url(url, timeout=60, verbose=True)
 
         # Parse as a dataframe
         df = pd.DataFrame(data)

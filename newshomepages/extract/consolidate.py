@@ -7,6 +7,7 @@ from datetime import datetime
 from pathlib import Path
 
 import click
+import requests
 from retry import retry
 from rich import print
 from rich.progress import track
@@ -173,10 +174,20 @@ def consolidate(
     zip_path.unlink()
 
 
-@retry(tries=3, delay=180, backoff=2)
+@retry(tries=3, delay=300)
 def _get_zip_archive(output_dir: Path) -> zipfile.ZipFile:
     print("⬇️ Downloading latest data")
-    zip_url = "https://archive.org/compress/latest-homepages/formats=JSON,JPEG,ITEM%20TILE,ARCHIVE%20BITTORRENT,METADATA"
-    zip_path = output_dir / "latest.zip"
-    utils.download_url(zip_url, zip_path)
-    return zipfile.ZipFile(zip_path)
+    url = "https://archive.org/compress/latest-homepages/formats=JSON,JPEG,ITEM%20TILE,ARCHIVE%20BITTORRENT,METADATA"
+    output_path = output_dir / "latest.zip"
+    timeout = 60 * 10  # 10 minutes
+    _download_url(url, output_path, timeout)
+    return zipfile.ZipFile(output_path)
+
+
+def _download_url(url: str, output_path: Path, timeout: int) -> None:
+    """Download the provided URL to the provided path."""
+    with requests.get(url, stream=True, timeout=timeout) as r:
+        r.raise_for_status()
+        with open(output_path, "wb") as f:
+            for chunk in r.iter_content(chunk_size=8192):
+                f.write(chunk)
