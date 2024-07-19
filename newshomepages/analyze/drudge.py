@@ -32,6 +32,7 @@ def drudge_entities(output_dir: str = "./"):
     output_path.mkdir(parents=True, exist_ok=True)
 
     # Import NLP library
+    print("Loading spacy")
     nlp = spacy.load("en_core_web_lg")
 
     # Read in data
@@ -40,18 +41,23 @@ def drudge_entities(output_dir: str = "./"):
     )
 
     # Filter down to stories
+    print("Filtering down to stories")
     story_df = drudge_df[drudge_df.is_story].copy()
 
     # Cut `...`
+    print("Sanitizing text")
     story_df.text = story_df.text.str.replace(r"\.{2,}", "", regex=True)
 
     # Uppercase everything
     story_df.text = story_df.text.str.upper()
 
     # Extract all headlines
+    print("Extracting headlines")
     headline_list = sorted(list(story_df.text.unique()))
 
     # Pull out all meaningful words
+    print("Parsing out all meaningful words")
+
     def get_lemma(headline: str):
         """Parse all of the words we want to keep from the provided headline."""
         # Read it into our NPL thing
@@ -87,6 +93,7 @@ def drudge_entities(output_dir: str = "./"):
     for headline in track(headline_list):
         word_list += get_lemma(headline)
 
+    # Convert to dataframe
     word_df = pd.DataFrame(word_list)
 
     # Remove our extra stop words, as well as symbols and verbs
@@ -124,12 +131,14 @@ def drudge_entities(output_dir: str = "./"):
         "HOUSE",  # This usually refers to the White House
         "\n",
     ]
+    print("Removing stop words")
     qualified_df = word_df[
         (~word_df.part_of_speech.isin(["SYM", "VERB"]))
         & (~word_df.lemma.isin(stop_list))
     ]
 
     # Calculate the 25 most common words
+    print("Calculating the 25 most common words")
     top_words = (
         qualified_df.groupby("lemma")
         .size()
@@ -192,6 +201,7 @@ def drudge_entities(output_dir: str = "./"):
         # Return the result
         return top_verb[0][0]
 
+    print("Calculating the top verb for each word")
     top_words["top_verb"] = top_words.lemma.apply(get_top_verb)
 
     # Get the timeseries for top words
@@ -244,9 +254,11 @@ def drudge_entities(output_dir: str = "./"):
         # Pass it out
         return json.dumps(dict_list)
 
+    print("Calculating the timeseries for each word")
     top_words["timeseries"] = top_words.lemma.apply(get_timeseries)
 
     # Write the result
+    print("Writing the result")
     top_words.to_csv(output_path / "drudge-entities-analysis.csv", index=False)
 
 
