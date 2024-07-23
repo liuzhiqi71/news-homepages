@@ -206,10 +206,13 @@ def drudge_entities(output_dir: str = "./"):
 
     # Get the timeseries for top words
     min_date, max_date = story_df.earliest_date.min(), story_df.earliest_date.max()
+    print(f"Min date: {min_date}")
+    print(f"Max date: {max_date}")
 
     def get_timeseries(lemma: str) -> str:
         """Pull the day to day timeseries for the provided word."""
         # Count the top words by day
+        print(f"- {lemma}")
         df = (
             qualified_df[qualified_df.lemma == lemma]
             .merge(
@@ -284,9 +287,10 @@ def drudge_hyperlinks(output_dir: str = "./"):
             "url",
         ],
         dtype=str,
-        parse_dates=["date"],
-        low_memory=True,
     )
+
+    # Parse dates
+    df["date"] = pd.to_datetime(df["date"])
 
     # Trim the strings
     print("Trimming strings")
