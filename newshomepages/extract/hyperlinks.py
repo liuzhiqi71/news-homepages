@@ -31,8 +31,8 @@ def hyperlinks(
     output_path: typing.Optional[typing.Any] = None,
 ):
     """Download and parse the provided site's hyperlinks files."""
-    # Get all lighthouse files
-    hyperlink_df = utils.get_hyperlink_df().sort_values(["handle", "date"])
+    # Get all hyperlink files
+    hyperlink_df = utils.get_hyperlink_df(verbose=True).sort_values(["handle", "date"])
 
     # Get the data we want
     if site:

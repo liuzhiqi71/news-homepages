@@ -544,12 +544,12 @@ def get_hyperlink_list() -> list[dict[str, typing.Any]]:
     return get_hyperlink_df().to_dict(orient="records")
 
 
-def get_hyperlink_df() -> pd.DataFrame:
+def get_hyperlink_df(verbose: bool = False) -> pd.DataFrame:
     """Get the full list of hyperlink files from our extracts.
 
     Returns a DataFrame.
     """
-    return _get_extract_files_df("hyperlink-files.csv")
+    return _get_extract_files_df("hyperlink-files.csv", verbose=verbose)
 
 
 def get_lighthouse_list() -> list[dict[str, typing.Any]]:
