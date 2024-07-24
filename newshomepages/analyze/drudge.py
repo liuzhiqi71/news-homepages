@@ -44,6 +44,10 @@ def drudge_entities(output_dir: str = "./"):
     print("Filtering down to stories")
     story_df = drudge_df[drudge_df.is_story].copy()
 
+    # Remove any links without text
+    print("Removing any links without text")
+    story_df = story_df[~pd.isnull(story_df.text)].copy()
+
     # Cut `...`
     print("Sanitizing text")
     story_df.text = story_df.text.str.replace(r"\.{2,}", "", regex=True)
