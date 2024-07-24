@@ -37,7 +37,9 @@ def drudge_entities(output_dir: str = "./"):
 
     # Read in data
     drudge_df = utils.get_extract_df(
-        "drudge-hyperlinks-analysis.csv", parse_dates=["earliest_date"]
+        "drudge-hyperlinks-analysis.csv",
+        parse_dates=["earliest_date"],
+        use_cache=False,
     )
 
     # Filter down to stories
@@ -58,6 +60,9 @@ def drudge_entities(output_dir: str = "./"):
     # Extract all headlines
     print("Extracting headlines")
     headline_list = sorted(list(story_df.text.unique()))
+    print(
+        f"{len(headline_list)} headlines found from {story_df.earliest_date.min()} to {story_df.earliest_date.max()}"
+    )
 
     # Pull out all meaningful words
     print("Parsing out all meaningful words")
@@ -99,6 +104,7 @@ def drudge_entities(output_dir: str = "./"):
 
     # Convert to dataframe
     word_df = pd.DataFrame(word_list)
+    print(f"Extracted {len(word_df)} words")
 
     # Remove our extra stop words, as well as symbols and verbs
     stop_list = [
@@ -133,6 +139,7 @@ def drudge_entities(output_dir: str = "./"):
         "DEAD",
         "SET",
         "HOUSE",  # This usually refers to the White House
+        "CITY",
         "\n",
     ]
     print("Removing stop words")
@@ -140,6 +147,7 @@ def drudge_entities(output_dir: str = "./"):
         (~word_df.part_of_speech.isin(["SYM", "VERB"]))
         & (~word_df.lemma.isin(stop_list))
     ]
+    print(f"Removed {len(word_df) - len(qualified_df)} stop words")
 
     # Calculate the 25 most common words
     print("Calculating the 25 most common words")
@@ -219,6 +227,7 @@ def drudge_entities(output_dir: str = "./"):
         print(f"- {lemma}")
         df = (
             qualified_df[qualified_df.lemma == lemma]
+            .copy()
             .merge(
                 story_df[["earliest_date", "text"]].rename(
                     columns={"text": "headline"}
@@ -241,11 +250,13 @@ def drudge_entities(output_dir: str = "./"):
         )
         date_index = pd.DatetimeIndex(date_range)
         backfilled_df = df.reindex(date_index)
-        backfilled_df.n.fillna(0, inplace=True)
+        backfilled_df.n = backfilled_df.n.fillna(0)
 
         # Calculate the 7-day rolling average
         backfilled_df["7_day_rolling_average"] = backfilled_df.n.rolling(7).mean()
-        backfilled_df["7_day_rolling_average"].fillna(0, inplace=True)
+        backfilled_df["7_day_rolling_average"] = backfilled_df[
+            "7_day_rolling_average"
+        ].fillna(0)
 
         # Convert it to a dict list
         dict_list = (
@@ -265,7 +276,7 @@ def drudge_entities(output_dir: str = "./"):
     top_words["timeseries"] = top_words.lemma.apply(get_timeseries)
 
     # Write the result
-    print("Writing the result")
+    print(f"Writing the result to {output_path / 'drudge-entities-analysis.csv'}")
     top_words.to_csv(output_path / "drudge-entities-analysis.csv", index=False)
 
 
@@ -291,6 +302,7 @@ def drudge_hyperlinks(output_dir: str = "./"):
             "url",
         ],
         dtype=str,
+        use_cache=False,
     )
 
     # Parse dates
