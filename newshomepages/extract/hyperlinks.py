@@ -32,7 +32,9 @@ def hyperlinks(
 ):
     """Download and parse the provided site's hyperlinks files."""
     # Get all hyperlink files
-    hyperlink_df = utils.get_hyperlink_df(verbose=True).sort_values(["handle", "date"])
+    hyperlink_df = utils.get_hyperlink_df(use_cache=False, verbose=True).sort_values(
+        ["handle", "date"]
+    )
 
     # Get the data we want
     if site:
@@ -52,9 +54,12 @@ def hyperlinks(
     filtered_df = hyperlink_df[hyperlink_df.handle.isin(handle_list)].copy()
 
     if days:
-        cutoff_date = filtered_df["date"].max() - pd.Timedelta(days=int(days))
+        max_date = filtered_df["date"].max()
+        cutoff_date = max_date - pd.Timedelta(days=int(days))
         filtered_df = filtered_df[filtered_df["date"] > cutoff_date].copy()
-        print(f"Trimming to last {days} days")
+        print(
+            f"Trimming to last {days} days from {cutoff_date:%Y-%m-%d} to {max_date:%Y-%m-%d}"
+        )
 
     # See how many files there are
     archived_files = set(filtered_df.url.unique())

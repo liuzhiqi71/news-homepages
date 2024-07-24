@@ -544,12 +544,14 @@ def get_hyperlink_list() -> list[dict[str, typing.Any]]:
     return get_hyperlink_df().to_dict(orient="records")
 
 
-def get_hyperlink_df(verbose: bool = False) -> pd.DataFrame:
+def get_hyperlink_df(use_cache: bool = True, verbose: bool = False) -> pd.DataFrame:
     """Get the full list of hyperlink files from our extracts.
 
     Returns a DataFrame.
     """
-    return _get_extract_files_df("hyperlink-files.csv", verbose=verbose)
+    return _get_extract_files_df(
+        "hyperlink-files.csv", use_cache=use_cache, verbose=verbose
+    )
 
 
 def get_lighthouse_list() -> list[dict[str, typing.Any]]:
@@ -560,12 +562,14 @@ def get_lighthouse_list() -> list[dict[str, typing.Any]]:
     return get_lighthouse_df().to_dict(orient="records")
 
 
-def get_lighthouse_df() -> pd.DataFrame:
+def get_lighthouse_df(use_cache: bool = True, verbose: bool = False) -> pd.DataFrame:
     """Get the full list of Lighthouse files from our extracts.
 
     Returns a DataFrame.
     """
-    return _get_extract_files_df("lighthouse-files.csv")
+    return _get_extract_files_df(
+        "lighthouse-files.csv", use_cache=use_cache, verbose=verbose
+    )
 
 
 def get_robotstxt_df(use_cache: bool = True, verbose: bool = False) -> pd.DataFrame:

@@ -32,7 +32,9 @@ def lighthouse(
 ):
     """Download and parse the provided site's Lighthouse files."""
     # Get all lighthouse files
-    lighthouse_df = utils.get_lighthouse_df().sort_values(["handle", "date"])
+    lighthouse_df = utils.get_lighthouse_df(use_cache=False, verbose=True).sort_values(
+        ["handle", "date"]
+    )
 
     # Get the data we want
     if site:
