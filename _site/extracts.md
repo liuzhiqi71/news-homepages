@@ -1,6 +1,3 @@
-```{include} _templates/nav.html
-```
-
 # Data extracts
 
 Daily exports of the data gathered by the archive. Available on GitHub at [archive.org/download/news-homepages-extracts/](https://archive.org/download/news-homepages-extracts/).

@@ -1,6 +1,3 @@
-```{include} _templates/nav.html
-```
-
 # Adding sites and bundles
 
 This page explains how to add new sites and bundles to the project by making a code contribution to the open-source repository.

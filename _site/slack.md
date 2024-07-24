@@ -1,6 +1,3 @@
-```{include} _templates/nav.html
-```
-
 # Adding a Slack bot
 
 The News Homepages [open-source system](https://github.com/palewire/news-homepages) supports the creation of bots that post a site's latest screenshots into a private [Slack](https://en.wikipedia.org/wiki/Slack_(software)) channel.

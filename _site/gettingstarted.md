@@ -1,6 +1,3 @@
-```{include} _templates/nav.html
-```
-
 # Installing the repository
 
 ```{contents} Sections

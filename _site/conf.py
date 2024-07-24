@@ -11,40 +11,31 @@ sys.path.insert(0, str(THIS_DIR.parent))
 extensions = [
     "myst_parser",
     "sphinx.ext.autodoc",
-    "sphinx.ext.napoleon",
     "sphinx_click",
 ]
 templates_path = ["_templates"]
-source_suffix = ".rst"
+source_suffix = {".rst": "restructuredtext"}
 master_doc = "index"
 html_extra_path = ["_extra"]
 
 project = "News Homepages"
 year = datetime.now().year
-copyright = f"{year} Ben Welsh"
+copyright = f"{year} palewire"
 
 exclude_patterns = ["_build"]
 
-html_theme = "alabaster"
+html_theme = "palewire"
 html_sidebars = {
     "**": [
         "about.html",
         "navigation.html",
-        "relations.html",
-        "searchbox.html",
-        "donate.html",
     ]
 }
 html_theme_options = {
     "canonical_url": "https://palewi.re/docs/news-homepages/",
-    "show_powered_by": False,
-    "show_relbar_bottom": True,
 }
 
 html_static_path = ["_static"]
-html_css_files = [
-    "css/custom.css",
-]
 html_js_files = [
     "https://cdn.jsdelivr.net/npm/vega@5.22.1",
     "https://cdn.jsdelivr.net/npm/vega-lite@5.2.0",

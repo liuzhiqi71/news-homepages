@@ -1,6 +1,3 @@
-.. raw:: html
-    :file: _templates/nav.html
-
 #########
 Reference
 #########
