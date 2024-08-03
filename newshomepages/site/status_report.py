@@ -14,12 +14,13 @@ def cli():
 
 
 @cli.command()
-def status_report():
+@click.option("-c", "--use-cache", "use_cache", is_flag=True, default=False)
+def status_report(use_cache: bool = False):
     """Create a status report."""
     print("📊 Creating status report")
 
     # Get all screenshots
-    screenshot_df = utils.get_screenshot_df(use_cache=False, verbose=True)
+    screenshot_df = utils.get_screenshot_df(use_cache=use_cache, verbose=True)
 
     # When did we start taking screenshots?
     start_date = screenshot_df["date"].min()
@@ -65,7 +66,7 @@ def status_report():
     )
 
     # Get all of our lighthouse data
-    lighthouse_df = utils.get_lighthouse_df(use_cache=False, verbose=True)
+    lighthouse_df = utils.get_lighthouse_df(use_cache=use_cache, verbose=True)
     total_lighthouse = len(lighthouse_df)
 
     # Get the number of sites with lighthouse data by date
@@ -78,7 +79,7 @@ def status_report():
     )
 
     # Get all of the accessibility trees
-    accessibility_df = utils.get_accessibility_df(use_cache=False, verbose=True)
+    accessibility_df = utils.get_accessibility_df(use_cache=use_cache, verbose=True)
     total_accessibility = len(accessibility_df)
 
     # Get the number of sites with accessibility data by date
@@ -91,7 +92,7 @@ def status_report():
     )
 
     # Get all of the hyperlink data
-    hyperlink_df = utils.get_hyperlink_df(use_cache=False, verbose=True)
+    hyperlink_df = utils.get_hyperlink_df(use_cache=use_cache, verbose=True)
     total_hyperlinks = len(hyperlink_df)
 
     # Get the number of sites with hyperlink data by date
@@ -104,7 +105,7 @@ def status_report():
     )
 
     # Get all of the robotstxt data
-    robotstxt_df = utils.get_robotstxt_df(use_cache=False, verbose=True)
+    robotstxt_df = utils.get_robotstxt_df(use_cache=use_cache, verbose=True)
     total_robotstxt = len(robotstxt_df)
 
     # Get the number of sites with robotstxt data by date
@@ -117,7 +118,7 @@ def status_report():
     )
 
     # Get all of the wayback data
-    wayback_df = utils.get_wayback_df(use_cache=False, verbose=True)
+    wayback_df = utils.get_wayback_df(use_cache=use_cache, verbose=True)
     total_wayback = len(wayback_df)
 
     # Get the number of sites with wayback data by date
@@ -130,6 +131,7 @@ def status_report():
     )
 
     # Merge all of the dataframes on date
+    print("🔗 Merging dataframes")
     df = sites_by_date.merge(cropped_screenshots_by_date, on="date", how="outer")
     df = df.merge(full_screenshots_by_date, on="date", how="outer")
     df = df.merge(lighthouse_by_date, on="date", how="outer")
@@ -138,6 +140,7 @@ def status_report():
     df = df.merge(robotstxt_by_date, on="date", how="outer")
     df = df.merge(wayback_by_date, on="date", how="outer")
 
+    print("📅 Formatting data")
     # Slice off the final two days, which are incomplete
     df = df[:-2]
 
@@ -150,6 +153,7 @@ def status_report():
     # Sum up all fields other than date across all columns and rows
     grand_total = df.set_index("date").sum().sum()
 
+    print("📝 Writing template")
     # Pass the data to our template context
     context = {
         "start_date": start_date.strftime("%B %d, %Y"),
