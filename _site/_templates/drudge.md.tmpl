@@ -170,7 +170,7 @@ const spec = {
 
 ## Top words
 
-Here are the people, places and things mentioned in the most headlines, as well as each's most commonly paired verb.
+Here are the people, places and things mentioned in the most headlines, as well as each's most commonly paired verb:
 
 <div class="table-container">
 <table class="colwidths-auto docutils align-default drudge-table drudge-entities">
@@ -196,16 +196,12 @@ Here are the people, places and things mentioned in the most headlines, as well 
     <td style="text-align: right;">
         {{ obj.n }}
     </td>
-    <td class="trend-chart">{% if loop.index0 == 0 %}
-<div class="trend-axis-label">
-    <span class="trend-axis-left">{{ min_date.strftime('%b. %-d') }}</span>
-    <span class="trend-axis-right">{{ max_date.strftime('%b. %-d') }}</span>
-</div>
-{% endif %}<img src="_static/charts/drudge/top-words/{{ obj.lemma.lower() }}.svg"
-     alt="{{ obj.lemma }} trend chart"
-     width=168
-     height=20 />
-</td>
+    <td class="trend-chart">
+      <img src="_static/charts/drudge/top-words/{{ obj.lemma.lower() }}.svg"
+       alt="{{ obj.lemma }} trend chart"
+       width=168
+       height=20 />
+    </td>
   </tr>
   {% endfor %}
  </tbody>
@@ -214,7 +210,7 @@ Here are the people, places and things mentioned in the most headlines, as well 
 
 ## Top domains
 
-Here are the 25 mostly frequently linked sites.
+Here are the 25 most frequently linked sites:
 
 <div class="table-container">
 <table class="colwidths-auto docutils align-default drudge-table">
