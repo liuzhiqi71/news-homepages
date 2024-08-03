@@ -62,19 +62,30 @@ function drawChart(attr, id, label) {
         y: { label: label },
         marks: [
             Plot.ruleY([0]),
-            Plot.areaY(data, {
-                x: "date",
-                y: attr,
-                fill: "gray",
-                fillOpacity: 0.2
-            }),
-            Plot.lineY(data, {
-                x: "date",
-                y: attr,
-                fillOpacity: 1,
-                strokeWidth: 2,
-                stroke: "gray"
-            })
+            Plot.areaY(
+                data,
+                Plot.windowY(
+                    7,
+                    {
+                        x: "date",
+                        y: attr,
+                        fill: "gray",
+                        fillOpacity: 0.2
+                    }
+                )
+            ),
+            Plot.lineY(data,
+                Plot.windowY(
+                    7,
+                    {
+                        x: "date",
+                        y: attr,
+                        fillOpacity: 1,
+                        strokeWidth: 2,
+                        stroke: "gray"
+                    }
+                )
+            )
         ]
     })
     const div = document.querySelector(id);
@@ -90,37 +101,37 @@ const config = {
     cropped_screenshots: {
         attr: 'cropped_screenshots',
         id: "#cropped-screenshots-by-date",
-        label: "Cropped screenshots by day"
+        label: "Cropped screenshots (7-day moving average)"
     },
     full_screenshots: {
         attr: 'full_screenshots',
         id: "#full-screenshots-by-date",
-        label: "Full screenshots by day"
+        label: "Full screenshots (7-day moving average)"
     },
     lighthouse: {
         attr: 'lighthouse',
         id: "#lighthouse-by-date",
-        label: "Lighthouse audits by day"
+        label: "Lighthouse audits (7-day moving average)"
     },
     accessibility: {
         attr: 'accessibility',
         id: "#accessibility-by-date",
-        label: "Accessibility trees by day"
+        label: "Accessibility trees (7-day moving average)"
     },
     hyperlinks: {
         attr: 'hyperlinks',
         id: "#hyperlinks-by-date",
-        label: "Hyperlink lists by day"
+        label: "Hyperlink lists (7-day moving average)"
     },
     wayback: {
         attr: 'wayback',
         id: "#wayback-by-date",
-        label: "Wayback Machine archive requests by day"
+        label: "Wayback Machine archive requests (7-day moving average)"
     },
     robotstxt: {
         attr: 'robotstxt',
         id: "#robotstxt-by-date",
-        label: "robots.txt by day"
+        label: "robots.txt files (7-day moving average)"
     }
 };
 Object.keys(config).forEach(key => {

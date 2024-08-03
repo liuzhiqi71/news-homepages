@@ -62,19 +62,30 @@ function drawChart(attr, id, label) {
         y: { label: label },
         marks: [
             Plot.ruleY([0]),
-            Plot.areaY(data, {
-                x: "date",
-                y: attr,
-                fill: "gray",
-                fillOpacity: 0.2
-            }),
-            Plot.lineY(data, {
-                x: "date",
-                y: attr,
-                fillOpacity: 1,
-                strokeWidth: 2,
-                stroke: "gray"
-            })
+            Plot.areaY(
+                data,
+                Plot.windowY(
+                    7,
+                    {
+                        x: "date",
+                        y: attr,
+                        fill: "gray",
+                        fillOpacity: 0.2
+                    }
+                )
+            ),
+            Plot.lineY(data,
+                Plot.windowY(
+                    7,
+                    {
+                        x: "date",
+                        y: attr,
+                        fillOpacity: 1,
+                        strokeWidth: 2,
+                        stroke: "gray"
+                    }
+                )
+            )
         ]
     })
     const div = document.querySelector(id);
