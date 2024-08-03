@@ -78,7 +78,7 @@ def drudge():
         .rename(columns={"index": "date"})
         .sort_values("date")
     )
-    backfilled_df.n.fillna(0, inplace=True)
+    backfilled_df.n = backfilled_df.n.fillna(0)
 
     # Calculate rolling average
     backfilled_df["7_day_rolling_average"] = backfilled_df.n.rolling(7).mean()

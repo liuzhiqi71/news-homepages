@@ -19,7 +19,7 @@ def status_report():
     print("📊 Creating status report")
 
     # Get all screenshots
-    screenshot_df = utils.get_screenshot_df()
+    screenshot_df = utils.get_screenshot_df(use_cache=False, verbose=True)
 
     # When did we start taking screenshots?
     start_date = screenshot_df["date"].min()
@@ -65,7 +65,7 @@ def status_report():
     )
 
     # Get all of our lighthouse data
-    lighthouse_df = utils.get_lighthouse_df()
+    lighthouse_df = utils.get_lighthouse_df(use_cache=False, verbose=True)
     total_lighthouse = len(lighthouse_df)
 
     # Get the number of sites with lighthouse data by date
@@ -78,7 +78,7 @@ def status_report():
     )
 
     # Get all of the accessibility trees
-    accessibility_df = utils.get_accessibility_df()
+    accessibility_df = utils.get_accessibility_df(use_cache=False, verbose=True)
     total_accessibility = len(accessibility_df)
 
     # Get the number of sites with accessibility data by date
@@ -91,7 +91,7 @@ def status_report():
     )
 
     # Get all of the hyperlink data
-    hyperlink_df = utils.get_hyperlink_df()
+    hyperlink_df = utils.get_hyperlink_df(use_cache=False, verbose=True)
     total_hyperlinks = len(hyperlink_df)
 
     # Get the number of sites with hyperlink data by date
@@ -104,7 +104,7 @@ def status_report():
     )
 
     # Get all of the robotstxt data
-    robotstxt_df = utils.get_robotstxt_df()
+    robotstxt_df = utils.get_robotstxt_df(use_cache=False, verbose=True)
     total_robotstxt = len(robotstxt_df)
 
     # Get the number of sites with robotstxt data by date
@@ -117,7 +117,7 @@ def status_report():
     )
 
     # Get all of the wayback data
-    wayback_df = utils.get_wayback_df()
+    wayback_df = utils.get_wayback_df(use_cache=False, verbose=True)
     total_wayback = len(wayback_df)
 
     # Get the number of sites with wayback data by date

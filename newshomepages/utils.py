@@ -512,12 +512,14 @@ def get_accessibility_list() -> list[dict[str, typing.Any]]:
     return get_accessibility_df().to_dict(orient="records")
 
 
-def get_accessibility_df() -> pd.DataFrame:
+def get_accessibility_df(use_cache: bool = True, verbose: bool = False) -> pd.DataFrame:
     """Get the full list of accessibility files from our extracts.
 
     Returns a DataFrame.
     """
-    return _get_extract_files_df("accessibility-files.csv")
+    return _get_extract_files_df(
+        "accessibility-files.csv", use_cache=use_cache, verbose=verbose
+    )
 
 
 def get_screenshot_list() -> list[dict[str, typing.Any]]:
@@ -528,12 +530,14 @@ def get_screenshot_list() -> list[dict[str, typing.Any]]:
     return get_screenshot_df().to_dict(orient="records")
 
 
-def get_screenshot_df() -> pd.DataFrame:
+def get_screenshot_df(use_cache: bool = True, verbose: bool = False) -> pd.DataFrame:
     """Get the full list of screenshot files from our extracts.
 
     Returns a DataFrame.
     """
-    return _get_extract_files_df("screenshot-files.csv")
+    return _get_extract_files_df(
+        "screenshot-files.csv", use_cache=use_cache, verbose=verbose
+    )
 
 
 def get_hyperlink_list() -> list[dict[str, typing.Any]]:
@@ -582,12 +586,14 @@ def get_robotstxt_df(use_cache: bool = True, verbose: bool = False) -> pd.DataFr
     )
 
 
-def get_wayback_df() -> pd.DataFrame:
+def get_wayback_df(use_cache: bool = True, verbose: bool = False) -> pd.DataFrame:
     """Get the full list of wayback files from our extracts.
 
     Returns a DataFrame.
     """
-    return _get_extract_files_df("wayback-files.csv")
+    return _get_extract_files_df(
+        "wayback-files.csv", use_cache=use_cache, verbose=verbose
+    )
 
 
 @retry(tries=3, delay=15, backoff=2)
