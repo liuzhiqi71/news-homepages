@@ -1,4 +1,5 @@
 """Save all of a site's hyperlinks as JSON."""
+
 from __future__ import annotations
 
 from pathlib import Path

@@ -1,4 +1,5 @@
 """Create a page tracking AI blockers based on most recently scraped robots.txt files."""
+
 import click
 import pandas as pd
 from rich import print

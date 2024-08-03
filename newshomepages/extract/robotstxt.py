@@ -1,4 +1,5 @@
 """Download and parse archived robots.txt files."""
+
 from __future__ import annotations
 
 import sqlite3

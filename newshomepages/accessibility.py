@@ -1,4 +1,5 @@
 """Save the accessiblity tree of the provided site."""
+
 from __future__ import annotations
 
 import json

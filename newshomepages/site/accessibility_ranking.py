@@ -47,9 +47,9 @@ def accessibility_ranking():
     # Calculate the grand total
     median = accessibility_df.accessibility_median.median() * 100
 
-    accessibility_df[
-        "accessibility_decile"
-    ] = accessibility_df.accessibility_median.apply(_round)
+    accessibility_df["accessibility_decile"] = (
+        accessibility_df.accessibility_median.apply(_round)
+    )
     histogram_df = (
         accessibility_df.groupby("accessibility_decile")
         .size()

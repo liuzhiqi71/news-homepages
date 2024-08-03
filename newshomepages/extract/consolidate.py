@@ -1,4 +1,5 @@
 """Consolidate Internet Archive metadata into CSV files."""
+
 from __future__ import annotations
 
 import json
