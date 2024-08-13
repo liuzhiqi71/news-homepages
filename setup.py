@@ -85,7 +85,6 @@ setup(
         "internetarchive",
         "python-slugify",
         "playwright",
-        "html5lib",
         "jinja2",
         "shot-scraper",
         "pillow",
