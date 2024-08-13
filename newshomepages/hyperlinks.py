@@ -57,7 +57,7 @@ def _get_links(context: BrowserContext, data: dict, timeout: int = 180):
                               Array.from(
                                 document.getElementsByTagName("a"))
                                     .map((a) => [a, a.getBoundingClientRect()])
-                                    .map(([a, rect]) => ({"text": a.text, "url": a.href, "x": rect.x, "y": rect.y, "w": rect.width, "h": rect.height })
+                                    .map(([a, rect]) => ({"text": a.text, "url": a.href, "top": rect.top, "left": rect.left, "bottom": rect.bottom, "right": rect.right })
                               )"""
     )
     data_list = [item for item in link_list if item["url"]]
