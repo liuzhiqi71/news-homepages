@@ -54,16 +54,27 @@ def _get_links(context: BrowserContext, data: dict, timeout: int = 180):
     # Parse out the data we want to keep in JavaScript
     link_list = page.evaluate(
         """
-                              Array.from(
-                                document.getElementsByTagName("a"))
-                                    .map((a) => [a, a.getBoundingClientRect()])
-                                    .map(([a, rect]) => ({"text": a.text, "url": a.href, "top": rect.top, "left": rect.left, "bottom": rect.bottom, "right": rect.right })
-                              )"""
+        Array.from(
+        document.getElementsByTagName("a"))             // get all links
+            .map((a) => [a, a.getBoundingClientRect()]) // make an Array [link, bbox]
+            .map(([a, rect]) => ({                      // transform to a Object
+                "text": a.text,
+                "url": a.href,
+                "top": rect.top,
+                "left": rect.left,
+                "bottom": rect.bottom,
+                "right": rect.right
+            })
+        )
+        """
     )
     data_list = [item for item in link_list if item["url"]]
 
     # Close the page
     page.close()
+
+    # Verify we actually got something back
+    assert len(data_list) > 0, "No hyperlinks found"
 
     # Return the result
     return data_list
