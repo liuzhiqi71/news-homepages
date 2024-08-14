@@ -30,7 +30,7 @@ def cli(handle: str, output_dir: str, verbose: bool = False):
         print(f"🏛 Requesting a Wayback Machine capture of {site['url']}")
     capture_data = _post(site["url"])
 
-    # If we've got a message, we need to just give up now. They're not going to do it.
+    # If we've got a message, just give up now. They're not going to do it.
     if "message" in capture_data:
         print(capture_data["message"])
     else:
@@ -42,7 +42,7 @@ def cli(handle: str, output_dir: str, verbose: bool = False):
                 print("Waiting 6 seconds to request our job's status")
             time.sleep(6)
 
-            # Check in our capture
+            # Check in on our capture
             status_url = f"https://web.archive.org/save/status/{capture_data['job_id']}"
             status_data = utils.get_json_url(status_url)
 
@@ -57,10 +57,10 @@ def cli(handle: str, output_dir: str, verbose: bool = False):
                 if verbose:
                     print("The capture is still pending.")
                 tries += 1
-                # Unless we're over out limit, then we quit
+                # Unless we're over our limit, then we quit
                 if tries >= 11:
                     if verbose:
-                        print("10 tries have failed. We’re done here.")
+                        print("10 tries and its still pending. We’re done here.")
                     break
             elif status_data["status"] == "error":
                 # If there's an error, end it now
