@@ -1,0 +1,85 @@
+table.align-default {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.latest-parent {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.latest-child {
+    width: 212px;
+    margin: 0 8px 8px 0;
+}
+
+.latest-child p {
+    margin-top: 0;
+}
+
+@media (max-width: 550px) {
+  .latest-child {
+    width: 190px;
+  }
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+table.drudge-table {
+    font-size: 16px;
+    line-height: 22px;
+    border: 0 !important;
+    box-shadow: none !important;
+    width: 100%;
+}
+
+table.drudge-table th {
+  border: 0;
+  padding-bottom: 0;
+}
+
+table.drudge-table td, table.drudge-table th {
+    border-right: 0;
+    border-left: 0;
+    border-top: 0;
+}
+
+table.drudge-table tbody td {
+    border-bottom: 0;
+    padding: 0.5em 0.7em;
+    vertical-align: bottom;
+}
+
+table.drudge-entities tbody td:first-of-type {
+    padding-top: 0;
+}
+
+table.drudge-table tbody tr {
+    border-bottom: 1px #e5e5e5 solid;
+}
+
+table.drudge-table tbody tr:last-of-type {
+    border-bottom: 0 !important;
+}
+
+.drudge-table .rank {
+    width: 40px;
+    padding-left: 0;
+}
+
+.drudge-table .trend-chart {
+    line-height: 16px;
+    padding-top: 5px;
+}
+
+.trend-axis-label {
+   font-size: 9px;
+   width: 168px;
+}
+
+.trend-axis-right {
+    float: right;
+}

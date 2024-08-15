@@ -16,9 +16,8 @@ from . import utils
 @click.command()
 @click.argument("handle")
 @click.option("-o", "--output-dir", "output_dir", default="./")
-@click.option("--timeout", "timeout", default="180")
-@click.option("--verbose", "verbose", default=False, is_flag=True)
-def cli(handle, output_dir="./", timeout="180", verbose=False):
+@click.option("-v", "--verbose", "verbose", default=False, is_flag=True)
+def cli(handle, output_dir="./", verbose=False):
     """Save all of a site's hyperlinks as JSON."""
     # Get the site
     site = utils.get_site(handle)
@@ -26,15 +25,14 @@ def cli(handle, output_dir="./", timeout="180", verbose=False):
     # Start the browser
     with sync_playwright() as p:
         # Open a browser
-        browser = p.chromium.launch(channel="chrome")
-        context = browser.new_context(user_agent=utils.get_user_agent())
+        context = utils._load_persistent_context(
+            p,
+            verbose=verbose,
+            adguard=site["no_adguard"] is not True,
+        )
 
         # Get lnks
-        if verbose:
-            print(f"🔗 Getting hyperlinks from {site['url']}")
-        link_list = _get_links(context, site, timeout=int(timeout))
-        if verbose:
-            print(f"{len(link_list)} links found")
+        link_list = _get_links(context, site, verbose=verbose)
 
         # Close the browser
         context.close()
@@ -45,16 +43,30 @@ def cli(handle, output_dir="./", timeout="180", verbose=False):
 
 
 @retry(tries=3, delay=5, backoff=2)
-def _get_links(context: BrowserContext, data: dict, timeout: int = 180):
+def _get_links(
+    context: BrowserContext, data: dict, verbose: bool = False
+) -> list[dict]:
+    """Get all hyperlinks from a page.
+
+    Args:
+        context (BrowserContext): The browser context to use.
+        data (dict): The site data.
+        verbose (bool, optional): Whether to print verbose output. Defaults to False.
+
+    Returns:
+        list[dict]: A list of dictionaries with link data.
+    """
     # Open a page like in screenshot()
     page = utils._load_new_page_disable_javascript(
         context=context,
         url=data["url"],
         handle=data["handle"],
-        wait_seconds=timeout,
+        verbose=verbose,
     )
 
     # Parse out the data we want to keep in JavaScript
+    if verbose:
+        print("🔗 Parsing hyperlinks")
     link_list = page.evaluate(
         """
         Array.from(
@@ -72,6 +84,8 @@ def _get_links(context: BrowserContext, data: dict, timeout: int = 180):
         """
     )
     data_list = [item for item in link_list if item["url"]]
+    if verbose:
+        print(f"{len(data_list)} hyperlinks found")
 
     # Close the page
     page.close()
