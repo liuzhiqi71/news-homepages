@@ -5,7 +5,6 @@ from __future__ import annotations
 from pathlib import Path
 
 import click
-from bs4 import BeautifulSoup
 from playwright.sync_api import sync_playwright
 from playwright.sync_api._generated import BrowserContext
 from retry import retry
@@ -47,33 +46,38 @@ def cli(handle, output_dir="./", timeout="180", verbose=False):
 
 @retry(tries=3, delay=5, backoff=2)
 def _get_links(context: BrowserContext, data: dict, timeout: int = 180):
-    # Open a page
-    page = context.new_page()
+    # Open a page like in screenshot()
+    page = utils._load_new_page_disable_javascript(
+        context=context,
+        url=data["url"],
+        handle=data["handle"],
+        wait_seconds=timeout,
+    )
 
-    # Go to the page
-    page.goto(data["url"], timeout=timeout * 1000)
-
-    # Pull the html
-    html = page.content()
-
-    # Parse out all the links
-    soup = BeautifulSoup(html, "html5lib")
-    link_list = soup.find_all("a")
-
-    # Parse out the data we want to keep
-    data_list = []
-    for link in link_list:
-        try:
-            d = dict(text=link.text, url=link["href"])
-        except KeyError:
-            # If no href, skip it
-            continue
-
-        # Add to big list
-        data_list.append(d)
+    # Parse out the data we want to keep in JavaScript
+    link_list = page.evaluate(
+        """
+        Array.from(
+        document.getElementsByTagName("a"))             // get all links
+            .map((a) => [a, a.getBoundingClientRect()]) // make an Array [link, bbox]
+            .map(([a, rect]) => ({                      // transform to a Object
+                "text": a.text,
+                "url": a.href,
+                "top": rect.top,
+                "left": rect.left,
+                "bottom": rect.bottom,
+                "right": rect.right
+            })
+        )
+        """
+    )
+    data_list = [item for item in link_list if item["url"]]
 
     # Close the page
     page.close()
+
+    # Verify we actually got something back
+    assert len(data_list) > 0, "No hyperlinks found"
 
     # Return the result
     return data_list
