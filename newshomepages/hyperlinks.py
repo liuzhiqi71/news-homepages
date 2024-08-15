@@ -46,11 +46,14 @@ def cli(handle, output_dir="./", timeout="180", verbose=False):
 
 @retry(tries=3, delay=5, backoff=2)
 def _get_links(context: BrowserContext, data: dict, timeout: int = 180):
-    # Open a page
-    page = context.new_page()
+    # Open a page like in screenshot()
+    page = utils._load_new_page_disable_javascript(
+        context=context,
+        url=data["url"],
+        handle=data["handle"],
+        wait_seconds=timeout,
+    )
 
-    # Go to the page
-    page.goto(data["url"], timeout=timeout * 1000)
     # Parse out the data we want to keep in JavaScript
     link_list = page.evaluate(
         """
