@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 
-import sqlite3
 import time
 from pathlib import Path
 from urllib.parse import urlparse
 
 import click
 import pandas as pd
+import sqlean as sqlite3
 import sqlite_robotstxt
 from rich import print
 
@@ -73,7 +73,7 @@ def robotstxt(
         filtered_df = df[df.handle.isin(handle_list)].copy()
     elif latest:
         slug = "latest"
-        filtered_df = df.groupby("handle").tail(1)
+        filtered_df = df.groupby("handle").tail(1).copy()
     else:
         slug = "all"
         filtered_df = df
@@ -120,6 +120,17 @@ def robotstxt(
     # fetch the cached robots.txt file for the site
     filtered_df["robotstxt"] = filtered_df["url"].apply(_get_url)
 
+    # Exclude any site that has an <html*> tag in the robots.txt file
+    qualified_df = filtered_df[
+        ~filtered_df["robotstxt"].str.contains("<html", case=False, na=False)
+    ].copy()
+
+    # Print all the sites that got dropped
+    if verbose:
+        dropped_df = filtered_df[~filtered_df.index.isin(qualified_df.index)]
+        print(f"{len(dropped_df)} sites dropped:")
+        print(dropped_df.handle.unique())
+
     # Using the sqlite-robotsxt SQLite extension for parsing the robots.txt file
     db = sqlite3.connect(":memory:")
     db.enable_load_extension(True)
@@ -127,7 +138,7 @@ def robotstxt(
     db.enable_load_extension(False)
 
     # Only export a few columns to the SQLite database for simplicity
-    filtered_df[
+    qualified_df[
         ["identifier", "handle", "file_name", "date", "url", "robotstxt"]
     ].to_sql("sites", con=db)
 
