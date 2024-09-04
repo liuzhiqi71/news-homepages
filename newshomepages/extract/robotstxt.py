@@ -28,6 +28,7 @@ def cli():
 @click.option("--bundle", "bundle", default=None)
 @click.option("--days", "days", default=None)
 @click.option("--latest", "latest", default=False, is_flag=True)
+@click.option("--monthly", "monthly", default=False, is_flag=True)
 @click.option("-o", "--output-path", "output_path", default=None)
 @click.option("--no-cache", "no_cache", default=False, is_flag=True)
 @click.option("--verbose", "verbose", default=False, is_flag=True)
@@ -38,6 +39,7 @@ def robotstxt(
     bundle=None,
     days=None,
     latest=False,
+    monthly=False,
     output_path=None,
     no_cache=False,
     verbose=False,
@@ -74,6 +76,13 @@ def robotstxt(
     elif latest:
         slug = "latest"
         filtered_df = df.groupby("handle").tail(1).copy()
+    elif monthly:
+        # Get the earliest record for each handle inside each calendar month
+        df["year_month"] = df["date"].dt.to_period("M")
+        filtered_df = df.loc[
+            df.groupby(["handle", "year_month"])["date"].idxmin()
+        ].copy()
+        filtered_df = filtered_df.drop(columns=["year_month"])
     else:
         slug = "all"
         filtered_df = df
