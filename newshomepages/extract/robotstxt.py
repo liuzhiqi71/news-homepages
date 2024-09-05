@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 
-import sqlite3
 import time
 from pathlib import Path
 from urllib.parse import urlparse
 
 import click
 import pandas as pd
+import sqlean as sqlite3
 import sqlite_robotstxt
 from rich import print
 
@@ -77,6 +77,7 @@ def robotstxt(
         slug = "latest"
         filtered_df = df.groupby("handle").tail(1).copy()
     elif monthly:
+        slug = "monthly"
         # Get the earliest record for each handle inside each calendar month
         df["year_month"] = df["date"].dt.to_period("M")
         filtered_df = df.loc[
