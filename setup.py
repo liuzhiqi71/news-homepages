@@ -82,7 +82,7 @@ setup(
     install_requires=[
         "click",
         "pytz",
-        "internetarchive",
+        "internetarchive>=5.0.4",
         "python-slugify",
         "playwright",
         "jinja2",
