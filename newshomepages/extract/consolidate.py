@@ -77,6 +77,11 @@ def consolidate(
         with zf.open(file_name) as fp:
             item_data = json.loads(fp.read())
 
+        # If the JSON doesn't have the right keys, skip it
+        if "metadata" not in item_data:
+            print(f"!!! Skipping {file_name} because it doesn't have the right keys")
+            continue
+
         # Pull out the data we want to keep
         identifier = file_name.replace(".json", "")
         handle = identifier[:-5]
