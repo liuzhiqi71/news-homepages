@@ -23,6 +23,7 @@ spacy = "*"
 spectra = "*"
 "mastodon.py" = "*"
 sqlite-robotstxt = "*"
+sqlean = "*"
 
 [dev-packages]
 pre-commit = "*"
