@@ -98,6 +98,7 @@ setup(
         "storysniffer",
         "spacy",
         "spectra",
+        "sqlean",
         "Mastodon.py",
         "sqlite-robotstxt",
     ],
