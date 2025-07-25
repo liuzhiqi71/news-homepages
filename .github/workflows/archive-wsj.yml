@@ -8,7 +8,7 @@ on:
 jobs:
   archive-site:
     name: Archive WSJ
-    uses: ./.github/workflows/reusable-archive-single-site-workflow.yml
+    uses: palewire/news-homepages/.github/workflows/reusable-archive-single-site-workflow.yml@main
     with:
       handle: wsj
     secrets: inherit
