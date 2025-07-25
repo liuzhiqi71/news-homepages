@@ -1,0 +1,25 @@
+name: "Archive and Slack: Economist"
+
+on:
+  schedule:
+    - cron: "20 10,16,22 * * *"
+  workflow_dispatch:
+
+jobs:
+  archive-site:
+    name: Archive Economist
+    uses: ./.github/workflows/reusable-archive-single-site-workflow.yml
+    with:
+      handle: economist
+    secrets: inherit
+
+  slack:
+    name: Post to Slack
+    runs-on: ubuntu-latest
+    needs: [archive-site]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/slack
+        with:
+          handle: economist
+          webhook-url: ${{ secrets.SLACK_WEBHOOK_URL_ECONOMIST }}
