@@ -1,0 +1,25 @@
+name: "Archive and Slack: WSJ"
+
+on:
+  schedule:
+    - cron: "0 10,16,22 * * *"
+  workflow_dispatch:
+
+jobs:
+  archive-site:
+    name: Archive WSJ
+    uses: ./.github/workflows/reusable-archive-single-site-workflow.yml
+    with:
+      handle: wsj
+    secrets: inherit
+
+  slack:
+    name: Post to Slack
+    runs-on: ubuntu-latest
+    needs: [archive-site]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/slack
+        with:
+          handle: wsj
+          webhook-url: ${{ secrets.SLACK_WEBHOOK_URL_WSJ }}
